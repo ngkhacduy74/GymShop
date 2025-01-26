@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GymShop</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+    <link rel="stylesheet" href="/LogAndRegis/style.css" />
+    <script src="/LogAndRegis/script.js" defer></script>
+    <style>
+      .input-field {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+      .input-field label {
+        flex: 1;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .input-field select,
+      .input-field input {
+        flex: 2;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        font-size: 16px;
+      }
+      .error-message {
+        color: red;
+        font-size: 14px;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector(".signup form");
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const fullName = form.querySelector("input[required]:nth-of-type(1)");
+          const username = form.querySelector("input[required]:nth-of-type(2)");
+          const email = form.querySelector("input[required]:nth-of-type(3)");
+          const password = form.querySelector("input[required]:nth-of-type(4)");
+          const confirmPassword = form.querySelector(
+            "input[required]:nth-of-type(5)"
+          );
+          const phone = form.querySelector("input[required]:nth-of-type(6)");
+          const address = form.querySelector("input[required]:nth-of-type(7)");
+
+          let isValid = true;
+
+          const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/g;
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const phonePattern = /^\d{10}$/;
+
+          if (specialCharPattern.test(fullName.value)) {
+            alert("Full Name cannot contain special characters.");
+            isValid = false;
+          }
+
+          if (specialCharPattern.test(address.value)) {
+            alert("Address cannot contain special characters.");
+            isValid = false;
+          }
+
+          if (!emailPattern.test(email.value)) {
+            alert("Please enter a valid email.");
+            isValid = false;
+          }
+
+          if (!phonePattern.test(phone.value)) {
+            alert("Phone number must be 10 digits and contain only numbers.");
+            isValid = false;
+          }
+
+          if (password.value !== confirmPassword.value) {
+            alert("Passwords do not match.");
+            isValid = false;
+          }
+
+          if (isValid) {
+            alert("Form submitted successfully!");
+            form.submit();
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <span class="hamburger-btn material-symbols-rounded">menu</span>
+        <a href="#" class="logo">
+          <img
+            src="/LogAndRegis/images/00928a7c-4e52-4bee-b30f-d1e8f23afb5c.webp"
+            alt="logo"
+          />
+          <h2>GymShop</h2>
+        </a>
+        <ul class="links">
+          <span class="close-btn material-symbols-rounded">close</span>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Portfolio</a></li>
+          <li><a href="#">Courses</a></li>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
+        <button class="login-btn">LOG IN</button>
+      </nav>
+    </header>
+
+    <div class="blur-bg-overlay"></div>
+    <div class="form-popup">
+      <span class="close-btn material-symbols-rounded">close</span>
+      <div class="form-box login">
+        <div class="form-details">
+          <h2>Welcome Back</h2>
+          <p>
+            Please log in using your personal information to stay connected with
+            us.
+          </p>
+        </div>
+        <div class="form-content">
+          <h2>LOGIN</h2>
+          <form action="#">
+            <div class="input-field">
+              <input type="text" required />
+              <label>Username</label>
+            </div>
+            <div class="input-field">
+              <input type="password" required />
+              <label>Password</label>
+            </div>
+            <a href="#" class="forgot-pass-link">Forgot password?</a>
+            <button type="submit">Log In</button>
+          </form>
+          <div class="bottom-link">
+            Don't have an account?
+            <a href="#" id="signup-link">Signup</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-box signup">
+        <div class="form-details">
+          <h2>Create Account</h2>
+          <p>
+            To become a part of our community, please sign up using your
+            personal information.
+          </p>
+        </div>
+        <div class="form-content">
+          <h2>SIGNUP</h2>
+          <form action="#">
+            <div class="input-field">
+              <input type="text" required />
+              <label>Full Name</label>
+            </div>
+            <div class="input-field">
+              <input type="text" required />
+              <label>Username</label>
+            </div>
+            <div class="input-field">
+              <input type="text" required />
+              <label>Email Address</label>
+            </div>
+            <div class="input-field">
+              <input type="password" required />
+              <label>Create Password</label>
+            </div>
+            <div class="input-field">
+              <input type="password" required />
+              <label>Confirm Password</label>
+            </div>
+            <div class="input-field">
+              <input type="text" required />
+              <label>Phone Number</label>
+            </div>
+            <div class="input-field">
+              <input type="text" required />
+              <label>Address</label>
+            </div>
+            <div class="input-field">
+              <!-- <label for="gender">Gender:</label> -->
+              <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="policy-text">
+              <input type="checkbox" id="policy" required />
+              <label for="policy">
+                I agree to the
+                <a href="#" class="option">Terms & Conditions</a>
+              </label>
+            </div>
+            <button id="signup_submit" type="submit">Sign Up</button>
+          </form>
+          <div class="bottom-link">
+            Already have an account?
+            <a href="#" id="login-link">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
