@@ -117,7 +117,29 @@ function validatePhoneNumber() {
   phoneInput.style.border = "";
   return true;
 }
-
+document
+  .getElementById("login_form")
+  .addEventListener("click", async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: document.getElementById("username_login").value,
+          password: document.getElementById("password_login").value,
+        }),
+      });
+      if (response.ok) {
+        alert("Login successfully");
+        location.reload();
+      } else {
+        alert("Login Fail!");
+      }
+    } catch (err) {
+      console.error("Error while calling API:", err);
+    }
+  });
 // Validate and submit form
 document
   .getElementById("signup_submit")
@@ -148,7 +170,7 @@ document
         });
 
         if (response.ok) {
-          alert("Create User Successfully!");
+          alert("Create User Successfully!Please login again!");
           location.reload();
         } else {
           alert("Create User Fail!");

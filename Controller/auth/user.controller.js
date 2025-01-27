@@ -26,3 +26,17 @@ module.exports.createUser = async (data) => {
     console.error("This err was threw in createUser func");
   }
 };
+
+module.exports.Login = async (username, userInputPassword) => {
+  const findUser = await User.findOne({ username: username });
+  const check = await bcrypt.compare(userInputPassword, findUser.password);
+  if (findUser) {
+    if (check === true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  console.log("Tài khoản người dùng chưa được đăng kí");
+  return false;
+};
