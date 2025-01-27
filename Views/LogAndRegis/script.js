@@ -1,3 +1,4 @@
+// Select elements
 const navbarMenu = document.querySelector(".navbar .links");
 const hamburgerBtn = document.querySelector(".hamburger-btn");
 const hideMenuBtn = navbarMenu.querySelector(".close-btn");
@@ -32,133 +33,137 @@ signupLoginLink.forEach((link) => {
   });
 });
 
+// Validation functions
+function validateFullName() {
+  const fullNameInput = document.getElementById("fullname");
+  const fullName = fullNameInput.value.trim();
+  const validNameRegex = /^[a-zA-Z\s]+$/;
+
+  if (!validNameRegex.test(fullName)) {
+    fullNameInput.style.border = "2px solid red";
+    // alert(
+    //   "Full Name must not contain special characters. Only letters and spaces are allowed."
+    // );
+    return false;
+  }
+
+  if (fullName.length <= 5) {
+    fullNameInput.style.border = "2px solid red";
+    // alert("Full Name must be longer than 5 characters.");
+    return false;
+  }
+  fullNameInput.style.border = "";
+  return true;
+}
+
+function validateUserName() {
+  const usernameInput = document.getElementById("username");
+  const username = usernameInput.value.trim();
+  const validNameRegex = /^[a-zA-Z\s]+$/;
+
+  if (!validNameRegex.test(username)) {
+    usernameInput.style.border = "2px solid red";
+    // alert(
+    //   "Username must not contain special characters. Only letters and spaces are allowed."
+    // );
+    return false;
+  }
+
+  if (username.length <= 8) {
+    usernameInput.style.border = "2px solid red";
+    // alert("Username must be longer than 8 characters.");
+    return false;
+  }
+  usernameInput.style.border = "";
+  return true;
+}
+
+function validateEmail() {
+  const emailInput = document.getElementById("email");
+  const email = emailInput.value.trim();
+  const validEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (!validEmailRegex.test(email)) {
+    emailInput.style.border = "2px solid red";
+    alert("Invalid email format. Please enter a valid email.");
+    return false;
+  }
+  emailInput.style.border = "";
+  return true;
+}
+
+function validateRePassword() {
+  const passwordInput = document.getElementById("password");
+  const rePasswordInput = document.getElementById("repassword");
+
+  if (passwordInput.value !== rePasswordInput.value) {
+    showError(rePasswordInput, "Confirm Password must match the Password.");
+    return false;
+  }
+
+  clearError(rePasswordInput);
+  return true;
+}
+function validatePhoneNumber() {
+  const phoneInput = document.getElementById("phone");
+  const phoneNumber = phoneInput.value.trim();
+  const validPhoneRegex = /^[0-9]{10}$/;
+
+  if (!validPhoneRegex.test(phoneNumber)) {
+    phoneInput.style.border = "2px solid red";
+    // alert("Phone Number must be exactly 10 digits, with no spaces or letters.");
+    return false;
+  }
+  phoneInput.style.border = "";
+  return true;
+}
+
+// Validate and submit form
 document
   .getElementById("signup_submit")
   .addEventListener("click", async (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch("create-user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        alert("Create User Successfully!");
-        location.reload();
-      } else {
-        alert("Create User Fail!");
-      }
-    } catch (err) {
-      console.error("Lỗi khi gọi API:", err);
-    }
-  });
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector(".signup form");
-  const submitButton = document.getElementById("signup_submit");
-  const inputs = form.querySelectorAll("input[required], select[required]");
 
-  // Hàm kiểm tra lỗi cho từng trường
-  const validateField = (field) => {
-    const errorMessage = field.nextElementSibling;
-
-    if (!errorMessage || !errorMessage.classList.contains("error-message")) {
-      return true; // Không có span lỗi thì bỏ qua
-    }
-
-    // Nếu trường trống
-    if (!field.value.trim()) {
-      errorMessage.textContent = "This field is required.";
-      return false;
-    }
-
-    // Kiểm tra các điều kiện riêng (nếu có)
-    if (field.type === "email") {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(field.value.trim())) {
-        errorMessage.textContent = "Please enter a valid email.";
-        return false;
-      }
-    }
-
-    if (field.id === "phone") {
-      const phonePattern = /^\d{10}$/;
-      if (!phonePattern.test(field.value.trim())) {
-        errorMessage.textContent =
-          "Phone number must be 10 digits and contain only numbers.";
-        return false;
-      }
-    }
-
-    if (field.type === "password" && field.id === "confirmPassword") {
-      const password = form.querySelector(
-        "input[type='password']:nth-of-type(1)"
-      );
-      if (field.value !== password.value) {
-        errorMessage.textContent = "Passwords do not match.";
-        return false;
-      }
-    }
-
-    // Xóa thông báo lỗi nếu trường hợp lệ
-    errorMessage.textContent = "";
-    return true;
-  };
-
-  // Hàm kiểm tra toàn bộ form
-  const validateForm = () => {
-    let isValid = true;
-
-    inputs.forEach((input) => {
-      if (!validateField(input)) {
-        isValid = false;
-      }
-    });
-
-    return isValid;
-  };
-
-  // Thêm các thông báo lỗi bên dưới các trường
-  inputs.forEach((input) => {
-    const errorSpan = document.createElement("span");
-    errorSpan.classList.add("error-message");
-    input.parentNode.appendChild(errorSpan);
-
-    input.addEventListener("input", () => {
-      validateField(input);
-    });
-  });
-
-  // Xử lý sự kiện submit của form
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    if (validateForm()) {
-      // Thu thập dữ liệu từ form
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
-
+    const isFullNameValid = validateFullName();
+    const isUserNameValid = validateUserName();
+    const isEmailValid = validateEmail();
+    const isPhoneValid = validatePhoneNumber();
+    // const repassword = validateRePassword();
+    if (isFullNameValid && isUserNameValid && isEmailValid && isPhoneValid) {
       try {
-        const response = await fetch("/create-user", {
+        const response = await fetch("/auth/create-user", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullname: document.getElementById("fullname").value,
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value,
+            password: document.getElementById("password").value,
+            gender: document.getElementById("gender").value,
+          }),
         });
 
         if (response.ok) {
-          const result = await response.json();
-          alert("User created successfully: " + result.message);
-          form.reset(); // Reset form sau khi thành công
+          alert("Create User Successfully!");
+          location.reload();
         } else {
-          const error = await response.json();
-          alert("Error: " + error.message);
+          alert("Create User Fail!");
         }
       } catch (err) {
-        alert("An error occurred: " + err.message);
+        console.error("Error while calling API:", err);
       }
     } else {
-      // Nếu form không hợp lệ, hiển thị thông báo lỗi
-      alert("Please fix the errors before submitting.");
+      alert("Please correct the errors in the form before submitting.");
     }
   });
-});
+document.getElementById("fullname").addEventListener("blur", validateFullName);
+document.getElementById("username").addEventListener("blur", validateUserName);
+document.getElementById("email").addEventListener("blur", validateEmail);
+document.getElementById("phone").addEventListener("blur", validatePhoneNumber);
+// document
+//   .getElementById("repassword")
+//   .addEventListener("blur", validateRePassword);

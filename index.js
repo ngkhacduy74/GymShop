@@ -7,6 +7,7 @@ const configs = require("./Config/index");
 
 app.set("views", path.join(__dirname, "Views"));
 app.set("view engine", "ejs");
+app.use(express.json());
 configs.connect();
 app.use(express.static("Views"));
 route(app);
