@@ -22,5 +22,4 @@ router.post(
     res.send(link_img);
   }
 );
-
 module.exports = router;
